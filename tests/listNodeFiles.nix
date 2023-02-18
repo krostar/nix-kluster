@@ -38,7 +38,7 @@
       "cluster1/_config/users/1.nix"
       "cluster1/site1/_config/3.nix"
       "cluster1/site1/_config/4.nix"
-      "cluster1/site1/domain2/_config/e.nix"
+      "cluster1/site1/domain2/_config/default.nix"
     ];
     "cluster1.site2.domain1.hostX" = [
       "_config/0.nix"

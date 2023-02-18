@@ -42,7 +42,11 @@
                 },
                 "domain2": {
                     "_config": {
-                        "e.nix": true
+                        "default.nix": true,
+                        "e.nix": true,
+                        "sub": {
+                            "h.nix": true
+                        }
                     }
                 }
             },
