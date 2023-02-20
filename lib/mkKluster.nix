@@ -3,10 +3,12 @@
 returns a set nixos systems usable as flake's nixosConfigurations
 the provided $clustersTreeDir is a path to the clusters directory (as defined in readClustersTree.nix)
 */
-{defaultNixosModules ? []}: clustersTreeDir: let
+{defaultNixosModules ? []} @ args: clustersTreeDir: let
   clustersTree = import ./readClustersTree.nix {inherit lib;} clustersTreeDir;
-  listNodeFiles = import ./listNodeFiles.nix {inherit lib;} clustersTree;
   nodesList = import ./mkNodesList.nix {inherit lib;} clustersTree;
+  mkNodeModulesList = import ./mkNodeModulesList.nix {inherit lib;} {
+    inherit defaultNixosModules clustersTree clustersTreeDir;
+  };
 in
   builtins.listToAttrs (
     builtins.map (
@@ -21,18 +23,8 @@ in
           site,
           domain,
           node,
-        }:
-          lib.nixosSystem {
-            modules =
-              defaultNixosModules
-              ++ [
-                ../modules/kluster
-                {
-                  kluster = {inherit cluster site domain node;};
-                  imports = builtins.map (item: clustersTreeDir + "/${item}") (listNodeFiles cluster site domain node);
-                }
-              ];
-          }
+        } @ item:
+          lib.nixosSystem {modules = mkNodeModulesList item;}
       )
       nodesList
     )
