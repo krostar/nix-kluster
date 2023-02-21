@@ -19,7 +19,10 @@ in
     ++ [
       ../modules/kluster
       {
-        kluster = {inherit cluster site domain node;};
+        kluster = {
+          inherit cluster site domain node;
+          dir = clustersTreeDir;
+        };
       }
     ]
     ++ builtins.map (item: clustersTreeDir + "/${item}") (listNodeFiles cluster site domain node)
