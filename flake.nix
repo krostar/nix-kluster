@@ -12,13 +12,25 @@
   }:
     flake-utils.lib.eachSystem (flake-utils.lib.defaultSystems ++ [flake-utils.lib.system.x86_64-darwin]) (
       system: let
-        pkgs = import nixpkgs {inherit system;};
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [self.overlays.lib];
+        };
       in {
-        checks = import ./tests {inherit pkgs;};
+        checks = import ./nix/tests/lib {inherit pkgs;};
       }
     )
     // {
-      lib = import ./lib {inherit (nixpkgs) lib;};
-      nixosModules = import ./modules;
+      lib = import ./nix/lib {inherit (nixpkgs) lib;};
+
+      overlays = {
+        lib = final: prev: {
+          lib = prev.lib.extend (_: lib: {
+            kluster = import ./nix/lib {inherit lib;};
+          });
+        };
+      };
+
+      nixosModules = import ./nixos/modules;
     };
 }
