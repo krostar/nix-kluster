@@ -9,7 +9,7 @@
   nodeModule = lib.kluster.setup.mkKlusterModule clustersDirPath clustersDir (lib.kluster.nodeToAttrs "cluster1" "site1" "domain1" "node1");
   nodeModuleAttrs = lib.evalModules {modules = [nodeModule];};
   nodeModuleAttrsJSON = builtins.toJSON {
-    host = nodeModuleAttrs.config.kluster.host;
+    inherit (nodeModuleAttrs.config.kluster) host;
     globalConfig = nodeModuleAttrs.config.kluster.data.config;
   };
 

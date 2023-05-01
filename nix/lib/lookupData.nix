@@ -1,12 +1,12 @@
 {lib}: let
   valueFound = found: value: {inherit found value;};
 in
-  {data, ...} @ klusterConfig: {
+  {data, ...}: {
     cluster,
     site,
     domain,
     node,
-  } @ klusterHost: keys: let
+  }: keys: let
     appendConfig = list: (list ++ ["config"] ++ keys);
 
     pathGlobal = [];

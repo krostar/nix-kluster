@@ -30,12 +30,7 @@ in
       }
     ) (
       builtins.map (
-        {
-          cluster,
-          site,
-          domain,
-          node,
-        } @ item:
+        item:
           lib.nixosSystem (
             nixosSystemArgs
             // {

@@ -8,7 +8,7 @@ in
     cleanEmptyAttrs (
       lib.filterAttrsRecursive (
         _: value:
-          builtins.isAttrs value || (builtins.isBool value && value == true)
+          builtins.isAttrs value || (builtins.isBool value && value)
       )
       clustersDir
     )

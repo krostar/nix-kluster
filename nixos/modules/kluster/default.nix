@@ -4,7 +4,6 @@
   ...
 }: let
   inherit (lib) types mkOption;
-  cfg = config.kluster;
 in {
   options.kluster = {
     data = {

@@ -13,8 +13,8 @@ clustersDirPath: clustersDir: let
   klusterNodes = listClustersDirNodes clustersDir;
 
   importKlusterFiles = keys:
-    lib.foldr (a: b: lib.recursiveUpdate a b) {} (
-      builtins.map (item: import item) (
+    lib.foldr lib.recursiveUpdate {} (
+      builtins.map import (
         listClustersDirFiles (
           clustersDirPath + "/${builtins.concatStringsSep "/" keys}"
         ) (
@@ -24,14 +24,14 @@ clustersDirPath: clustersDir: let
     );
 in
   cleanEmptyAttrs (
-    lib.foldr (a: b: lib.recursiveUpdate a b) {} (
+    lib.foldr lib.recursiveUpdate {} (
       builtins.map (
         {
           cluster,
           site,
           domain,
           node,
-        } @ item: {
+        }: {
           config = importKlusterFiles ["_config"];
           clusters = {
             "${cluster}" = {

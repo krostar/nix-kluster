@@ -14,12 +14,12 @@ in
           then false
           else true
       ) ( # map function
-        keys: value:
+        _: value:
           if
             builtins.isAttrs value
             && builtins.hasAttr "default.nix" value
             && builtins.isBool value."default.nix"
-            && value."default.nix" == true
+            && value."default.nix"
           then {"default.nix" = true;}
           else value
       )

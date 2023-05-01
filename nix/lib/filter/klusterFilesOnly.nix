@@ -9,7 +9,7 @@ in
       lib.filterAttrsRecursive (
         key: value:
           builtins.isAttrs value
-          || (key == "_kluster.nix" && builtins.isBool value && value == true)
+          || (key == "_kluster.nix" && builtins.isBool value && value)
       )
       clustersDir
     )

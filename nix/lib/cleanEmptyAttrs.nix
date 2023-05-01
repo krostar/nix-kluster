@@ -3,12 +3,12 @@
 filter out empty attr from set
 */
 attr:
-lib.foldr (a: b: lib.recursiveUpdate a b) {} (
+lib.foldr lib.recursiveUpdate {} (
   builtins.map (
     item: lib.setAttrByPath item.keys item.value
   ) (
     lib.collect (
-      value: (builtins.isAttrs value) && (lib.attrByPath ["_marker"] false value) == true
+      value: (builtins.isAttrs value) && (lib.attrByPath ["_marker"] false value)
     ) (
       lib.mapAttrsRecursive (keys: value: {
         inherit keys value;

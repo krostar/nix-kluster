@@ -1,12 +1,7 @@
 {lib}: let
   lookupData = import ./lookupData.nix {inherit lib;};
 in
-  {data, ...} @ klusterConfig: {
-    cluster,
-    site,
-    domain,
-    node,
-  } @ klusterHost: keys: let
+  klusterConfig: klusterHost: keys: let
     lc = lookupData klusterConfig klusterHost keys;
   in
     if lc.found

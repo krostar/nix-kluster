@@ -18,7 +18,7 @@
   */
   readClustersDir = dir:
     lib.filterAttrsRecursive (
-      key: value:
+      _: value:
         (builtins.isAttrs value && builtins.length (builtins.attrValues value) != 0) || builtins.isBool value
     ) (
       lib.mapAttrs (
