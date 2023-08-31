@@ -5,6 +5,8 @@ builtins.listToAttrs (
     value = pkgs.callPackage (./. + "/${item}.nix") {};
   })
   [
+    "data/combined"
+
     "filter/klusterFilesOnly"
     "filter/nodeFilesOnly"
     "filter/noKlusterFiles"
@@ -13,13 +15,13 @@ builtins.listToAttrs (
 
     "setup/listClustersDirFiles"
     "setup/listClustersDirNodes"
-    "setup/mkKlusterModuleData"
+    "setup/mkKlusterData"
     "setup/mkKlusterModule"
     "setup/readClustersDir"
 
     "cleanEmptyAttrs"
-    "getData"
-    "lookupData"
+    "listNodes"
     "nodeToAttrs"
+    "recursiveMerge"
   ]
 )
