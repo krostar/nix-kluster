@@ -1,22 +1,23 @@
-{lib}:
-/*
-instantiate the kluster module for a given host
-*/
-clustersDirPath: clustersDir: let
-  mkKlusterModuleData = import ./mkKlusterModuleData.nix {inherit lib;};
-  klusterData = mkKlusterModuleData clustersDirPath clustersDir;
+{lib}: let
+  mkKlusterData = import ./mkKlusterData.nix {inherit lib;};
 in
-  {
-    cluster,
-    site,
-    domain,
-    node,
-  }: {
-    imports = [../../../nixos/modules/kluster];
-    config = {
-      kluster = {
-        data = klusterData;
-        host = {inherit cluster site domain node;};
+  /*
+  instantiate the kluster module for a given host
+  */
+  clustersDirPath: clustersDir: let
+    klusterData = mkKlusterData clustersDirPath clustersDir;
+  in
+    {
+      cluster,
+      site,
+      domain,
+      node,
+    }: {
+      imports = [../../../nixos/modules/kluster];
+      config = {
+        kluster = {
+          data = klusterData;
+          host = {inherit cluster site domain node;};
+        };
       };
-    };
-  }
+    }

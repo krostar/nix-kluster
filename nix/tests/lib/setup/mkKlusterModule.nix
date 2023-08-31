@@ -10,12 +10,12 @@
   nodeModuleAttrs = lib.evalModules {modules = [nodeModule];};
   nodeModuleAttrsJSON = builtins.toJSON {
     inherit (nodeModuleAttrs.config.kluster) host;
-    globalConfig = nodeModuleAttrs.config.kluster.data.config;
+    reducedConfig = nodeModuleAttrs.config.kluster.data.original.config;
   };
 
   expectedNodeModuleAttrsJSON = ''
     {
-      "globalConfig": {
+      "reducedConfig": {
         "array": [
           "a"
         ],
