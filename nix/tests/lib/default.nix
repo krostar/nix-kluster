@@ -17,6 +17,7 @@ builtins.listToAttrs (
     "setup/listClustersDirNodes"
     "setup/mkKlusterData"
     "setup/mkKlusterModule"
+    "setup/mkKlusterNodeModules"
     "setup/readClustersDir"
 
     "cleanEmptyAttrs"
