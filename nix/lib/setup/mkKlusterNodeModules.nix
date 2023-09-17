@@ -11,15 +11,11 @@ in
   returns a given node module list
   the provided $clustersDirPath is a path to the clusters directory (as defined in readClustersDir.nix)
   */
-  {
-    clustersDirPath,
-    defaultNixosModules ? [],
-  }: let
+  clustersDirPath: let
     clustersDir = filterClustersDirValidNixFilesOnly (readClustersDir clustersDirPath);
     filteredClustersDirNodeFilesOnly = filterClustersDirNodeFilesOnly (filterClustersDirStopAtDefaultNixFiles (filterClustersDirNoKlusterFiles clustersDir));
   in
     node: (
-      defaultNixosModules
-      ++ [(mkKlusterModule clustersDirPath clustersDir node)]
+      [(mkKlusterModule clustersDirPath clustersDir node)]
       ++ listClustersDirFiles clustersDirPath (filteredClustersDirNodeFilesOnly node)
     )

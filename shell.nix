@@ -8,7 +8,7 @@ pkgs.mkShell {
 
     # go related
     gci
-    go_1_19
+    go
     gofumpt
     golangci-lint
 

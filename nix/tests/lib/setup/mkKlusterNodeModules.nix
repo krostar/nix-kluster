@@ -5,7 +5,7 @@
 }: let
   clustersDirPath = ../testdata;
 
-  mkKlusterNodeModules = lib.kluster.setup.mkKlusterNodeModules {inherit clustersDirPath;};
+  mkKlusterNodeModules = lib.kluster.setup.mkKlusterNodeModules clustersDirPath;
   klusterHost = {
     cluster = "cluster1";
     site = "site1";

@@ -12,9 +12,17 @@ in
     clustersDirPath, # path to the directory containing all nodes configuration
     defaultNixosModules ? [], # list of nixOS modules to prepend to the nixosSystem.modules attribute
     nixosSystemArgs ? {}, # argument provided to the nixosSystem function, overrided to add the node modules list
+    # perNodeAdditionalNixosModules:
+    #   list of additional nixOS modules to append to defaultNixosModules list depending on the node
+    #   example:
+    #     {
+    #       cluster1.domain1.site1.node1 = [...];
+    #       cluster1.domain1.site1.node2 = [...];
+    #     };
+    perNodeAdditionalNixosModules ? {},
   }: let
     clustersDir = readClustersDir clustersDirPath;
-    buildNodeModules = mkKlusterNodeModules {inherit clustersDirPath defaultNixosModules;};
+    buildNodeModules = mkKlusterNodeModules clustersDirPath;
     clustersNodes = listClustersDirNodes (filterClustersDirValidNixFilesOnly clustersDir);
   in
     builtins.listToAttrs (
@@ -22,10 +30,25 @@ in
         name = "${config.networking.hostName}.${config.networking.domain}";
         value = nixosSystem;
       }) (
-        builtins.map (item:
+        builtins.map (host @ {
+          cluster,
+          site,
+          domain,
+          node,
+        }:
           lib.nixosSystem (
-            nixosSystemArgs // {modules = buildNodeModules item;}
+            nixosSystemArgs
+            // {
+              modules =
+                defaultNixosModules
+                ++ (lib.attrByPath [cluster site domain node] [] perNodeAdditionalNixosModules)
+                ++ (buildNodeModules host);
+            }
           ))
         clustersNodes
       )
     )
+# {
+#   cluster = "krostar"
+# }
+
