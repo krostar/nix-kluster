@@ -12,30 +12,25 @@ jobs:
   tests:
     runs-on: "ubuntu-latest"
     steps:
-      - uses: "cachix/install-nix-action@v23"
+      - uses: "cachix/install-nix-action@v27"
         with:
           nix_path: "nixpkgs=channel:nixos-22.11"
-      - uses: "actions/checkout@v3"
+      - uses: "actions/checkout@v4"
       - name: "Print installed nixpkgs version"
         run: "nix-instantiate --eval -E '(import <nixpkgs> {}).lib.version'"
       - name: "Print flake metadata"
         run: "nix flake metadata"
       - name: "Setup shell"
         run: "nix develop --command true"
-      - name: "Lint yaml files"
-        run: "nix develop --command yamllint --config-file .yamllint.yml ."
-      - name: "Lint nix files"
-        run: |
-          nix develop --command alejandra --check .
-          nix develop --command deadnix --fail
-          nix develop --command statix check --config .statix.toml
+
       - name: "Run nix tests"
         run: "nix flake check"
-      - name: "Lint go files"
-        run: "nix develop --command golangci-lint run --verbose"
-        working-directory: "go"
-      - name: "Run go unit tests"
-        run: "nix develop --command go test -v -race -count=1 ./..."
-        working-directory: "go"
+
+      - name: "Lint shell files"
+        run: "nix develop --command ./scripts/lint-sh.sh"
+      - name: "Lint yaml files"
+        run: "nix develop --command ./scripts/lint-yaml.sh"
+      - name: "Lint nix files"
+        run: "nix develop --command ./scripts/lint-nix.sh"
 
 ...
