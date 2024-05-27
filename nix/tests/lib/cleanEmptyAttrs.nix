@@ -40,7 +40,7 @@
 in
   pkgs.runCommand "test.lib/cleanEmptyAttrs" {} ''
     ${pkgs.jq}/bin/jq --argjson x '${filteredAttrsJSON}' -n '$x'
-    echo "<- current | expectations -> "
+    echo "<- current | expectations ->"
     ${pkgs.jq}/bin/jq --argjson y '${expectedFilteredAttrsJSON}' -n '$y'
     [ "$(${pkgs.jq}/bin/jq --argjson x '${filteredAttrsJSON}' --argjson y '${expectedFilteredAttrsJSON}' -n '$x == $y')" == "true" ]
     touch $out

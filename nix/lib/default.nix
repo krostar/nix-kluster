@@ -4,7 +4,6 @@
   setup = import ./setup {inherit lib;};
 
   cleanEmptyAttrs = import ./cleanEmptyAttrs.nix {inherit lib;};
-  listNodes = import ./listNodes.nix {inherit lib;};
-  nodeToAttrs = import ./nodeToAttrs.nix;
+  hostToAttrs = import ./hostToAttrs.nix;
   recursiveMerge = import ./recursiveMerge.nix {inherit lib;};
 }

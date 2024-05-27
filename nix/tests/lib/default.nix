@@ -6,23 +6,24 @@ builtins.listToAttrs (
   })
   [
     "data/combined"
+    "data/combinedFor"
 
-    "filter/klusterFilesOnly"
-    "filter/nodeFilesOnly"
-    "filter/noKlusterFiles"
+    "filter/dataFilesOnly"
+    "filter/hostFilesOnly"
+    "filter/noDataFiles"
     "filter/stopAtDefaultNixFiles"
     "filter/validNixFilesOnly"
 
     "setup/listClustersDirFiles"
-    "setup/listClustersDirNodes"
-    "setup/mkKlusterData"
-    "setup/mkKlusterModule"
-    "setup/mkKlusterNodeModules"
-    "setup/readClustersDir"
+    "setup/listClustersDirHosts"
+    "setup/mkData"
+    "setup/mkHostModules"
+    "setup/mkHostsModules"
+    "setup/mkModule"
+    "setup/readDir"
 
     "cleanEmptyAttrs"
-    "listNodes"
-    "nodeToAttrs"
+    "hostToAttrs"
     "recursiveMerge"
   ]
 )

@@ -1,6 +1,6 @@
 {lib}:
 /*
-returns a node combined attributes
+returns a host combined attributes
 */
 {
   host ? {},
@@ -14,13 +14,13 @@ returns a node combined attributes
 }:
 lib.attrByPath [
   "clusters"
-  host.cluster
+  cluster
   "sites"
-  host.site
+  site
   "domains"
-  host.domain
+  domain
   "nodes"
-  host.node
+  node
   "config"
 ] {}
 data.combined

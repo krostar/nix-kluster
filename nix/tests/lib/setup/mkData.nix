@@ -4,12 +4,12 @@
   ...
 }: let
   clustersDirPath = ../testdata;
-  clustersDir = lib.kluster.setup.readClustersDir clustersDirPath;
+  clustersDir = lib.kluster.setup.readDir clustersDirPath;
 
-  klusterConfig = lib.kluster.setup.mkKlusterData clustersDirPath clustersDir;
-  klusterConfigJSON = builtins.toJSON klusterConfig;
+  data = lib.kluster.setup.mkData clustersDirPath clustersDir;
+  dataJSON = builtins.toJSON data;
 
-  expectedKlusterConfigJSON = ''
+  expectedDataJSON = ''
     {
       "original": {
         "config": {
@@ -186,10 +186,10 @@
     }
   '';
 in
-  pkgs.runCommand "test.lib/setup/mkKlusterData" {} ''
-    ${pkgs.jq}/bin/jq --argjson x '${klusterConfigJSON}' -n '$x'
-    echo "<- current | expectations -> "
-    ${pkgs.jq}/bin/jq --argjson y '${expectedKlusterConfigJSON}' -n '$y'
-    [ "$(${pkgs.jq}/bin/jq --argjson x '${klusterConfigJSON}' --argjson y '${expectedKlusterConfigJSON}' -n '$x == $y')" == "true" ]
+  pkgs.runCommand "test.lib/setup/mkData" {} ''
+    ${pkgs.jq}/bin/jq --argjson x '${dataJSON}' -n '$x'
+    echo "<- current | expectations ->"
+    ${pkgs.jq}/bin/jq --argjson y '${expectedDataJSON}' -n '$y'
+    [ "$(${pkgs.jq}/bin/jq --argjson x '${dataJSON}' --argjson y '${expectedDataJSON}' -n '$x == $y')" == "true" ]
     touch $out
   ''

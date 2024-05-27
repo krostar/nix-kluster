@@ -16,7 +16,7 @@
     - a value that is a set (meaning subdirectory)
     - a boolean that is true if the key is a regular file ending with .nix
   */
-  readClustersDir = dir:
+  readDir = dir:
     lib.filterAttrsRecursive (
       _: value:
         (builtins.isAttrs value && builtins.length (builtins.attrValues value) != 0) || builtins.isBool value
@@ -24,9 +24,9 @@
       lib.mapAttrs (
         file: type:
           if type == "directory"
-          then readClustersDir "${dir}/${file}"
+          then readDir "${dir}/${file}"
           else (type == "regular" && (lib.hasSuffix ".nix" file))
       ) (builtins.readDir dir)
     );
 in
-  readClustersDir
+  readDir

@@ -1,25 +1,25 @@
 {lib}: let
   cleanEmptyAttrs = import ../cleanEmptyAttrs.nix {inherit lib;};
   recursiveMerge = import ../recursiveMerge.nix {inherit lib;};
-  listClustersDirNodes = import ./listClustersDirNodes.nix {inherit lib;};
+  listClustersDirHosts = import ./listClustersDirHosts.nix {inherit lib;};
   listClustersDirFiles = import ./listClustersDirFiles.nix {inherit lib;};
-  filterKlusterFilesOnly = import ../filter/klusterFilesOnly.nix {inherit lib;};
+  filterDataFilesOnly = import ../filter/dataFilesOnly.nix {inherit lib;};
 in
   /*
   retrieve all kluster data files and build a unique attribute set containing all values
   */
   clustersDirPath: clustersDir: let
-    clustersDirKlusterFilesOnly = filterKlusterFilesOnly clustersDir;
+    clustersDirDataFilesOnly = filterDataFilesOnly clustersDir;
 
-    klusterNodes = listClustersDirNodes clustersDir;
+    klusterHosts = listClustersDirHosts clustersDir;
 
-    importKlusterFiles = keys:
+    importDataFiles = keys:
       lib.foldr lib.recursiveUpdate {} (
         builtins.map import (
           listClustersDirFiles (
             clustersDirPath + "/${builtins.concatStringsSep "/" keys}"
           ) (
-            lib.attrByPath keys {} clustersDirKlusterFilesOnly
+            lib.attrByPath keys {} clustersDirDataFilesOnly
           )
         )
       );
@@ -32,19 +32,19 @@ in
           domain,
           node,
         }: {
-          config = importKlusterFiles ["_config"];
+          config = importDataFiles ["_config"];
           clusters = {
             "${cluster}" = {
-              config = importKlusterFiles [cluster "_config"];
+              config = importDataFiles [cluster "_config"];
               sites = {
                 "${site}" = {
-                  config = importKlusterFiles [cluster site "_config"];
+                  config = importDataFiles [cluster site "_config"];
                   domains = {
                     "${domain}" = {
-                      config = importKlusterFiles [cluster site domain "_config"];
+                      config = importDataFiles [cluster site domain "_config"];
                       nodes = {
                         "${node}" = {
-                          config = importKlusterFiles [cluster site domain node];
+                          config = importDataFiles [cluster site domain node];
                         };
                       };
                     };
@@ -55,7 +55,7 @@ in
           };
         }
       )
-      klusterNodes
+      klusterHosts
     );
   in
     cleanEmptyAttrs {

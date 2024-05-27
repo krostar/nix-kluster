@@ -24,36 +24,7 @@
     in
       import ./nix/tests/lib {inherit pkgs;});
 
-    devShells = forEachSupportedSystems (system: let
-      pkgs = pkgsForSystem system {};
-    in {
-      default = pkgs.mkShellNoCC {
-        nativeBuildInputs = with pkgs; [
-          act
-          git
-          shellcheck
-          shfmt
-          yamllint
-
-          # go related
-          gci
-          go_1_22
-          gofumpt
-          golangci-lint
-          gotools
-          govulncheck
-
-          # nix related
-          alejandra
-          deadnix
-          manix
-          statix
-        ];
-        shellHook = ''
-          export CGO_ENABLED=0
-        '';
-      };
-    });
+    devShells = forEachSupportedSystems (system: {default = import ./nix/shell.nix {pkgs = pkgsForSystem system {};};});
 
     formatter = forEachSupportedSystems (system: let pkgs = pkgsForSystem system {}; in pkgs.alejandra);
 
@@ -67,6 +38,6 @@
       };
     };
 
-    nixosModules = import ./nixos/modules;
+    nixosModules = import ./nix/nixos/modules;
   };
 }

@@ -2,7 +2,7 @@
   cleanEmptyAttrs = import ../cleanEmptyAttrs.nix {inherit lib;};
 in
   /*
-  keep only files a node is concerned with
+  keep only files a host is concerned with
   */
   clustersDir: {
     cluster,

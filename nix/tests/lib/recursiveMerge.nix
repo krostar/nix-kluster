@@ -41,7 +41,7 @@
 in
   pkgs.runCommand "test.lib/recursiveMerge" {} ''
     ${pkgs.jq}/bin/jq --argjson x '${valueJSON}' -n '$x'
-    echo "<- current | expectations -> "
+    echo "<- current | expectations ->"
     ${pkgs.jq}/bin/jq --argjson y '${expectedValueJSON}' -n '$y'
     [ "$(${pkgs.jq}/bin/jq --argjson x '${valueJSON}' --argjson y '${expectedValueJSON}' -n '$x == $y')" == "true" ]
     touch $out

@@ -4,4 +4,4 @@ in
   /*
   returns the current host combined attributes
   */
-  klusterConfig: combinedFor klusterConfig {}
+  data: combinedFor data {}

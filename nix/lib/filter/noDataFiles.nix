@@ -2,14 +2,13 @@
   cleanEmptyAttrs = import ../cleanEmptyAttrs.nix {inherit lib;};
 in
   /*
-  keep only _kluster.nix files inside clustersDir
+  remove all kluster files from clustersDir
   */
   clustersDir:
     cleanEmptyAttrs (
       lib.filterAttrsRecursive (
         key: value:
-          builtins.isAttrs value
-          || (key == "_kluster.nix" && builtins.isBool value && value)
+          !(key == "_data.nix" && builtins.isBool value)
       )
       clustersDir
     )

@@ -1,9 +1,10 @@
 {lib, ...}: {
   listClustersDirFiles = import ./listClustersDirFiles.nix {inherit lib;};
-  listClustersDirNodes = import ./listClustersDirNodes.nix {inherit lib;};
+  listClustersDirHosts = import ./listClustersDirHosts.nix {inherit lib;};
+  mkData = import ./mkData.nix {inherit lib;};
+  mkHostModules = import ./mkHostModules.nix {inherit lib;};
+  mkHostsModules = import ./mkHostsModules.nix {inherit lib;};
   mkKluster = import ./mkKluster.nix {inherit lib;};
-  mkKlusterData = import ./mkKlusterData.nix {inherit lib;};
-  mkKlusterModule = import ./mkKlusterModule.nix {inherit lib;};
-  mkKlusterNodeModules = import ./mkKlusterNodeModules.nix {inherit lib;};
-  readClustersDir = import ./readClustersDir.nix {inherit lib;};
+  mkModule = import ./mkModule.nix {inherit lib;};
+  readDir = import ./readDir.nix {inherit lib;};
 }
